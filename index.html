@@ -1,0 +1,448 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no" />  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://jsrun.it/assets/6/S/D/4/6SD40.png">
+    <title>デルタ解錠</title>
+    <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
+        
+<meta charset="UTF-8" />
+<title>forked: ロックスクリーン - js do it</title>
+<meta name="Description" content="jsdo.it - share JavaScript, HTML5 and CSS -" />
+<meta name="Keywords"  content="JavaScript,HTML5,CSS" />
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
+<style type="text/css">*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color : #000;
+}
+
+#lockScreen {
+    position:absolute;
+    width :100%;
+    height:100%;
+    background-color: #000;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.54, rgba(0,0,0,0.0)),  color-stop(1, rgba(0,0,0,0.7))), 
+        url(http://9to5mac.files.wordpress.com/2011/12/iphone1.png);
+    background-size: 100% 100%,100% 100%;
+    overflow:hidden;
+    -webkit-user-select: none;
+    -webkit-transition: 0.3s ease-in;
+}
+
+#temperature {
+    position:relative;
+    top:50%;
+    left: 50%;
+    width :320px;
+    height:10px;
+    margin-left:-160px;
+    margin-top:-20px;
+    color: #fff;
+    font-weight: 100;
+    text-shadow: 0px -1px 0 rgba(0,0,0,0.3);
+    font-size:20px;
+    text-align: center;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",Helvetica, Arial, "Lucida Grande", sans-serif, 'Julius Sans One';
+
+}
+
+#toolbar  {
+    position:absolute;
+    width :100%;
+    height:20px;
+    background-color: rgba(0,0,0,0.0);
+}
+
+header {    
+    position:absolute;
+    top: 20px;
+    width :100%;
+    height:96px;
+    border-top: solid 1px rgba(255,255,255,0.3);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(80,80,80,0.6)),  color-stop(0.5, rgba(20,20,20,0.6)), color-stop(0.5, rgba(0,0,0,0.6)));    
+    -webkit-transition: 0.2s ease-in;
+}
+
+header :before  {
+    content:"";
+    position:absolute;
+    top: 100%;
+    left:0px;
+    width :100%;
+    height:3px;
+    z-index:4;
+    border-top: solid 1px rgba(60,60,60,0.3);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.1)),  color-stop(1, rgba(0,0,0,0))); 
+}
+
+header h1, header h2 {
+    color: #fff;
+    font-weight: 100;
+    text-shadow: 0px -1px 0 rgba(0,0,0,0.3);
+    text-align: center;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",Helvetica, Arial, "Lucida Grande", sans-serif, 'Julius Sans One';
+}
+
+header h1 {
+    font-size: 65px;
+    line-height: 65px;
+    letter-spacing: -2px;    
+}
+
+header h2 {
+    font-size: 17px;
+    line-height: 20px;
+}
+
+
+footer  {    
+    padding: 0px 0px;
+    border-top: solid 1px rgba(255,255,255,0.3);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(80,80,80,0.7)),  color-stop(0.5, rgba(20,20,20,0.7)), color-stop(0.5, rgba(0,0,0,0.7)));
+    position:absolute;
+    width :100%;
+    height:96px;
+    bottom:0px;
+    z-index:10; 
+     -webkit-transition: 0.2s ease-in;
+}
+
+
+.UISlider{
+    position: absolute;
+    display: block;
+    text-align: center;
+    width :276px;
+    height:54px;
+    margin: -27px 0px 0px -138px;
+    top: 50%;
+    left: 50%;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #3b3b3b), color-stop(1, #787878));
+    -webkit-user-select: none;
+    border-radius: 12px;
+}
+
+.UISlider:after{
+    content: "";
+    position:absolute;
+    top: 1px;
+    left: 1px;
+    width :274px;
+    height:52px;
+    border-radius: 12px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #0c0c0c), color-stop(1, #2b2b2b));
+}
+
+
+.UISliderKnob{
+    
+    position:absolute;
+    width :93px;
+    height:92px;
+    top: -16px;
+    left: -26px;
+    background-color: rgba(255,0,0,0);
+    z-index:5;
+    
+}
+
+.UISliderKnob div{
+    
+    position:absolute;    
+    top: 20px;
+    left: 30px;
+    width :63px;
+    height:46px;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.2)),  color-stop(1, rgba(0,0,0,0)));
+    
+    border-radius: 10px;
+    background-color: #eee;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fdfdfd), color-stop(0.5, #dfdfdf), color-stop(0.51, #d0d0d0), color-stop(1.0, #a4a4a4));
+    -webkit-transform: translate3d(0, 0, 0); 
+    
+}
+
+
+
+
+
+.UISliderText{
+    
+    position:absolute;
+    width :200px;
+    height:46px;
+    top: 4px;
+    left: 71px;
+    z-index:4;
+    line-height: 46px;
+    font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", sans-serif;
+    color : #fff;
+    font-size: 22px;
+    
+    -webkit-transform: translate3d(0, 0, 0);     
+    color:#444;
+    
+}
+
+
+
+.UISliderTextAnimation{
+    
+    
+    background: -webkit-linear-gradient(left,  #444 0%,#fff 20%,#444 40%);
+    -webkit-background-size:250px 35px;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-animation-name: bgAnim;
+    -webkit-animation-duration: 1.6s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    
+}
+
+
+@-webkit-keyframes bgAnim {
+    0% {background-position:0 0;}
+    100% {background-position: 250px 0;}
+}
+
+
+
+
+
+</style></head>
+<head>
+    <meta name="viewport" content="width=0, user-scalable=yes, initial-scale=1, maximum-scale=1.0, minimum-scale=1.0" />
+</head>
+
+<body>
+    <div id = lockScreen>        
+        <audio id="unlockSound" preload="auto"><source src="http://jsrun.it/assets/x/0/w/P/x0wPK.mp3" type="audio/mp3"></audio>
+        
+        <div id = toolbar></div>
+        <header id="header">
+            <h1 id="header_h1">12:35</h1>
+            <h2 id="header_h2">2月25日(月曜日)</h2>
+        </header>
+        
+        <div id="temperature"></div>
+        
+        <footer id="footer">    
+            <div class = "UISlider">
+                <div class = "UISliderText UISliderTextAnimation">デルタ解錠</div>
+                <div class = "UISliderKnob" >
+                    <div>
+                    <svg> 
+                        <polygon points="15,17.5   34,17.5  34,10     52,23     34,36  34,28.5   15,28.5"style="fill:#eee " transform="translate(0,0.5)"/>
+                        <polygon points="15,17.5   34,17.5  34,10     52,23     34,36  34,28.5   15,28.5"style="fill:#444 " transform="translate(0,-0.5)"/>
+                        <polygon points="15,17.5   34,17.5  34,10     52,23     34,36  34,28.5   15,28.5"style="fill:url(#grad1) "/>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#c1c1c1" />
+                            <stop offset="50%" stop-color="#a5a5a5" />
+                            <stop offset="51%" stop-color="#8c8c8c" />
+                            <stop offset="100%" stop-color="#666" />
+                        linearGradient>
+                    </svg>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    
+    <script src="http://jsrun.it/assets/3/4/R/w/34RwG"></script>    
+    
+<script type="text/javascript" src="/lib/jquery-2.0.2/js"></script>
+<script type="text/javascript">// forked from keimakun's "ロックスクリーン" http://jsdo.it/keimakun/3hKv
+var soundLoadFlag = 0;
+clocknow();
+setInterval ( 'clocknow()',1000 );
+
+function clocknow(){
+    
+    var now = new Date();
+    var y = now.getFullYear();
+    var  mo = now.getMonth() + 1 ;
+    var d = now.getDate();
+    var h = now.getHours();
+    var mi = now.getMinutes();
+    var s = now.getSeconds();
+    var weekArray = new Array('日', '月', '火', '水', '木', '金', '土') ; 
+    var week=weekArray[now.getDay()]+'曜日' ;
+    if ( mi < 10 ) { mi = "0" + mi ;} 
+    $('#header_h1').html(h+":"+mi);
+    $('#header_h2').html(mo+"月"+d+"日"+"("+week+")");
+    
+}
+
+function play(){
+              
+    var unlock = $('#unlockSound')[0];
+    unlock.volume = 0.1;
+    unlock.play();
+              
+}
+
+function load(){
+    
+    var unlock = $('#unlockSound')[0];
+    unlock.load();
+
+};
+
+
+$(function(){
+        
+    var touchstart,touchmove,touchend;
+    touchstart = 'touchstart';
+    touchmove = 'touchmove';
+    touchend = 'touchend';
+        
+    document.addEventListener("touchstart", function(){  event.preventDefault();   }, false);    
+    
+    $(".UISliderKnob").bind(touchstart,function(){
+        
+        if(soundLoadFlag==0){load();soundLoadFlag=1;}
+        
+        this.flag = 0;
+        this.style.webkitTransition= '0.0s ease-in';
+        event.preventDefault();                                                
+         var matrix = new WebKitCSSMatrix(window.getComputedStyle(this).webkitTransform);
+        this.touchStartX = event.changedTouches[0].pageX;
+        this.touchStartY = event.changedTouches[0].pageY;     
+        this.transStartX = parseInt(matrix.e);
+        this.transX = transStartX;
+                
+    });
+    
+    
+    $(".UISliderKnob").bind(touchmove,function(){ 
+        
+         if (this.flag == 1) {  return;   }
+        
+        
+        var touchX = event.changedTouches[0].pageX; 
+        var transX = this.transStartX + (touchX - this.touchStartX);
+        if (transX > 204)transX = 204;
+        if (transX < 1)transX = 0;
+        this.transX = transX;
+        $(this)[0].style.webkitTransform = 'translate3d('+transX+'px, 0, 0)'; 
+        
+        var opacity = 1-(transX*0.01);
+        if(opacity < 0) opacity= 0;
+        
+        $(".UISliderText")[0].style.opacity = opacity; 
+        if(transX > 0)$(".UISliderText").removeClass('UISliderTextAnimation');
+        
+        
+        
+        var touchY = event.changedTouches[0].pageY;   
+        var transY = (touchY - this.touchStartY);
+        if(transY < -100){
+            
+            this.flag = 1;  //失効
+            this.style.webkitTransform = 'translate3d(0, 0, 0)'; 
+            this.style.webkitTransition= transX*0.001+'s linear';
+            $(".UISliderText").addClass('UISliderTextAnimation');
+            
+            setTimeout( function() {$(".UISliderText")[0].style.opacity = 1; }, transX*0.5);
+            
+        }
+        
+    });
+    
+        
+    $(".UISliderKnob").bind(touchend,function(){
+        
+        
+        if (this.flag == 1) {  return;   }
+        
+        var transX  =  this.transX;
+        if(transX == 204){
+                        
+            door_open();
+            
+            play();            
+            
+             setTimeout( function() {
+                 
+                 $("#footer")[0].style.webkitTransform = 'translate3d(0, 98px, 0)';
+                 $("#header")[0].style.webkitTransform = 'translate3d(0, -98px, 0)';
+                 $("#lockScreen")[0].style.webkitTransform = 'translate3d(0, 0, 0)';
+                 $("#lockScreen")[0].style.opacity = 0.0;
+             
+             }, 100);
+            
+            
+            setTimeout( function() {
+                                
+                $(".UISliderKnob")[0].style.webkitTransition= 0;
+                $(".UISliderKnob")[0].style.webkitTransform = 'translate3d(0, 0, 0)'; 
+                $(".UISliderText").addClass('UISliderTextAnimation');
+                $(".UISliderText")[0].style.opacity = 1;
+                $("#footer")[0].style.webkitTransition= 0;
+                $("#header")[0].style.webkitTransition= 0;
+                $("#lockScreen")[0].style.webkitTransition= 0;
+                $("#footer")[0].style.webkitTransform = 'translate3d(0, 0, 0)';
+                $("#header")[0].style.webkitTransform = 'translate3d(0, 0, 0)';
+                $("#lockScreen")[0].style.opacity = 0.0;
+                $("#lockScreen")[0].style.webkitTransform = 'scale(0.7,0.7)';
+                
+             }, 450);
+            
+            setTimeout( function() {
+                $("#footer")[0].style.webkitTransition= '0.2s ease-in';
+                $("#header")[0].style.webkitTransition= '0.2s ease-in';
+                $("#lockScreen")[0].style.webkitTransition= '0.2s ease-in-out';
+                $("#lockScreen")[0].style.webkitTransform = 'scale(1.0,1.0)';
+                $("#lockScreen")[0].style.opacity = 1.0; 
+             }, 500);
+                     
+        } else {
+            
+            this.flag = 1;
+            this.style.webkitTransform = 'translate3d(0, 0, 0)'; 
+            this.style.webkitTransition= transX*0.001+'s linear';
+            $(".UISliderText").addClass('UISliderTextAnimation');
+            setTimeout( function() {$(".UISliderText")[0].style.opacity = 1; }, transX*0.5);        
+        
+        }
+    });
+});
+
+
+var linda_url = "http://linda.masuilab.org";
+var space = "delta";
+var tuple = ["door", "open"];
+
+var io = new RocketIO().connect(linda_url);
+var linda = new Linda(io);
+var ts = new linda.TupleSpace(space);
+
+function door_open(){
+        
+    ts.write(tuple);
+    
+};
+
+io.on("connect", function(){    
+    ts.watch(["sensor"], function(tuple){
+        if(typeof tuple === "undefined" || tuple === null) return;
+        if(tuple.length !== 3) return; 
+        if(tuple[1]=="temperature"){ $("#temperature").text( tuple[2]+"℃");
+  });    
+});
+
+
+
+
+</script></body>
+</html>
